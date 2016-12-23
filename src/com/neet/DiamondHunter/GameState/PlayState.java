@@ -111,7 +111,6 @@ public class PlayState extends GameState {
 		boxes = new ArrayList<Rectangle>();
 		eventStart = true;
 		eventStart();
-			
 	}
 	
 	private void populateDiamonds() {
