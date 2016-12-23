@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import com.neet.DiamondHunter.Entity.Diamond;
 import com.neet.DiamondHunter.Entity.Item;
 import com.neet.DiamondHunter.Entity.Player;
@@ -19,6 +21,7 @@ import com.neet.DiamondHunter.Manager.Data;
 import com.neet.DiamondHunter.Manager.GameStateManager;
 import com.neet.DiamondHunter.Manager.JukeBox;
 import com.neet.DiamondHunter.Manager.Keys;
+import com.neet.DiamondHunter.Main.WriteCoord;
 import com.neet.DiamondHunter.TileMap.TileMap;
 
 public class PlayState extends GameState {
@@ -171,19 +174,33 @@ public class PlayState extends GameState {
 	}
 	
 	private void populateItems() {
+		int[] itemPos = WriteCoord.getCoord(1); //1 indicates line 1 which is the axe and boat coordinates.
 		
+		if(itemPos == null) {			
+			JOptionPane.showMessageDialog(null, 
+							"The game has failed to load custom coordinates. Falling back to default state.\n"
+							+ "Check if Entity-Coordinate.txt file is in the same directory with the game jar file.\n"
+							+ "To get custom coordinates, please run Map Viewer.jar at least once.", 
+							"No custom configurations found.", 
+							JOptionPane.INFORMATION_MESSAGE);
+			System.err.println("The game has failed to load custom coordinates. Falling back to default state.");
+			itemPos = new int[4];
+			itemPos[0] = 26;
+			itemPos[1] = 37;
+			itemPos[2] = 12;
+			itemPos[3] = 4;
+		}
 		Item item;
 		
 		item = new Item(tileMap);
 		item.setType(Item.AXE);
-		item.setTilePosition(26, 37);
+		item.setTilePosition(itemPos[0], itemPos[1]);
 		items.add(item);
 		
 		item = new Item(tileMap);
 		item.setType(Item.BOAT);
-		item.setTilePosition(12, 4);
+		item.setTilePosition(itemPos[2], itemPos[3]);
 		items.add(item);
-		
 	}
 	
 	public void update() {
